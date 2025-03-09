@@ -4,7 +4,7 @@ import requests
 class Pokemon:
     pokemons = {}
     # Инициализация объекта (конструктор)
-    def __init__(self, pokemon_trainer):
+    def __init__(self, pokemon_trainer, level=1, exp=0):
 
         self.pokemon_trainer = pokemon_trainer   
 
@@ -12,6 +12,8 @@ class Pokemon:
         self.img = self.get_img()
         self.name = self.get_name()
         self.abilities = self.get_abilities()
+        self.exp = exp
+        self.level = level
 
         Pokemon.pokemons[pokemon_trainer] = self
 
@@ -21,9 +23,7 @@ class Pokemon:
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
-            abilities = []
-            for ability in data['abilities']:
-                abilities.append(ability['ability']['name'])
+            return (data['abilities'][0]['ability']['name'])
         else:
             return "Pikachu"
     # Метод для получения картинки покемона через API
