@@ -3,7 +3,7 @@ from config import token
 from logic import Pokemon
 
 bot = telebot.TeleBot(token) 
-feedcooldown = 300
+feedcooldown = 150
 lastfeed ={}
 
 @bot.message_handler(commands=['go'])
@@ -29,7 +29,7 @@ def feed(message):
         expgain = random.randint(5, 15)
         pokemon.exp += expgain
         bot.reply_to(message, f'''Ты покормил своего покемона😋
-Он получил 10 опыта⬆️ Кол-во опыта до следующего уровня: {30 * pokemon.level - pokemon.exp}''')
+Он получил {expgain} опыта⬆️ Кол-во опыта до следующего уровня: {30 * pokemon.level - pokemon.exp}''')
         if pokemon.exp >= 30 * pokemon.level:
             pokemon.level += 1
             bot.reply_to(message, f'''Твой покемон вырос! Теперь у него {pokemon.level} уровень!😊''')
