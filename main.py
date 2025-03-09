@@ -20,9 +20,9 @@ def go(message):
 def feed(message):
     global exp, lvl
     if message.from_user.username in Pokemon.pokemons.keys():
+        exp += 10
         bot.reply_to(message, f'''Ты покормил своего покемона😋
 Он получил 10 опыта⬆️ Кол-во опыта до следующего уровня: {30 * lvl - exp}''')
-        exp += 10
         if exp >= 30 * lvl:
             lvl += 1
             bot.reply_to(message, f'''Твой покемон вырос! Теперь у него {lvl} уровень!😊''')
