@@ -5,7 +5,9 @@ from logic import Pokemon
 bot = telebot.TeleBot(token) 
 feedcooldown = 0
 lastfeed ={}
-
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, 'Привет! Я бот, который поможет тебе создать своего покемона.🐣 Для этого напиши /go 😉')
 @bot.message_handler(commands=['go'])
 def go(message):
     if message.from_user.username not in Pokemon.pokemons.keys():
@@ -57,6 +59,12 @@ def pokemon(message):
     else:
         bot.reply_to(message, 'Сначала создай себе покемона')
 
+@bot.message_handler(commands=['info'])
+def info(message):
+    bot.reply_to(message, '''-  Этот бот создан для того, чтобы ты мог создать себе покемона 
+    и кормить его.🐥
+🔶 Автор: @sirdezzan
+💠 Версия бота: 0.2''')
 
 bot.infinity_polling(none_stop=True)
 
