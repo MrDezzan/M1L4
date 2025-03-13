@@ -4,7 +4,7 @@ import requests
 class Pokemon:
     pokemons = {}
     # Инициализация объекта (конструктор)
-    def __init__(self, pokemon_trainer, level=1, exp=0, hp, power):
+    def __init__(self, pokemon_trainer, level=1, exp=0):
 
         self.pokemon_trainer = pokemon_trainer   
 
@@ -14,7 +14,6 @@ class Pokemon:
         self.abilities = self.get_abilities()
         self.exp = exp
         self.level = level
-
         self.hp = randint(75, 100)
         self.power = randint(5,20)
 
