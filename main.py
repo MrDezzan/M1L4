@@ -3,7 +3,7 @@ from config import token
 from logic import Pokemon
 
 bot = telebot.TeleBot(token) 
-feedcooldown = 0
+feedcooldown = 150
 lastfeed ={}
 @bot.message_handler(commands=['start'])
 def start(message):
