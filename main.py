@@ -52,6 +52,21 @@ def feed(message):
     else:
         bot.reply_to(message, 'Сначала создай себе покемона')
 
+@bot.message_handler(commands=['attack'])
+def attack(message):
+    attacker = Pokemon.pokemons[message.from_user.username]
+    defender = Pokemon.pokemons[message.reply_to_message.from_user.username]
+    if message.reply_to_message:
+        if message.reply_to_message.from_user.username in Pokemon.pokemons.keys() and message.from_user.username in Pokemon.pokemons.keys():
+            bot.send_message(message.chat.id, f"🔥 @{defender}, вы готовы сразиться с @{attacker}? Ответьте 'Да' или 'Нет")
+            if message.reply_to_message.text == 'Да':
+                result = pokemon.attack(defender)
+                bot.send_message(message.chat.id, result)
+            else:
+                bot.send_message(message.chat.id, "Сражаться можно только с покемонами")
+    else:
+        bot.reply_to("⚠️ Ответь этой командой на сообщение противника, чтобы напасть!")
+
 
 @bot.message_handler(commands=['pokemon'])
 def pokemon(message):
