@@ -7,7 +7,7 @@ class Pokemon:
     def __init__(self, pokemon_trainer, level=1, exp=0):
 
         self.pokemon_trainer = pokemon_trainer   
-
+        self.race = "Не опеределён"
         self.pokemon_number = randint(1,1000)
         self.img = self.get_img()
         self.name = self.get_name()
@@ -71,7 +71,7 @@ class Pokemon:
 # Раса покемона 
     # Метод класса для получения информации
     def info(self):
-        return (f'**📄 Профиль твоего покемона**'
+        return (f'**📄 Профиль твоего покемона**\\\n\n'
                 f"🦊 Имя твоего покемона: {self.name}\n"
                 f"🧬 Раса: {self.race}\n"
                 f"⚡ Способности: {self.abilities}\n"
