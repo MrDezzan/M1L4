@@ -4,10 +4,10 @@ import requests
 class Pokemon:
     pokemons = {}
     # Инициализация объекта (конструктор)
-    def __init__(self, pokemon_trainer, level=1, exp=0):
+    def __init__(self, pokemon_trainer, level=1, exp=0, race = "❔Не определён"):
 
         self.pokemon_trainer = pokemon_trainer   
-        self.race = "Не опеределён"
+        self.race = race
         self.pokemon_number = randint(1,1000)
         self.img = self.get_img()
         self.name = self.get_name()

@@ -54,18 +54,30 @@ def feed(message):
 
 @bot.message_handler(commands=['attack'])
 def attack(message):
-    attacker = Pokemon.pokemons[message.from_user.username]
-    defender = Pokemon.pokemons[message.reply_to_message.from_user.username]
-    if message.reply_to_message:
-        if message.reply_to_message.from_user.username in Pokemon.pokemons.keys() and message.from_user.username in Pokemon.pokemons.keys():
-            bot.send_message(message.chat.id, f"🔥 @{defender}, вы готовы сразиться с @{attacker}? Ответьте 'Да' или 'Нет")
-            if message.reply_to_message.text == 'Да':
-                result = pokemon.attack(defender)
-                bot.send_message(message.chat.id, result)
-            else:
-                bot.send_message(message.chat.id, "Сражаться можно только с покемонами")
+    if not message.reply_to_message or not message.reply_to_message.from_user:
+        bot.send_message(message.chat.id, "⚠️ Ответь этой командой на сообщение противника, чтобы напасть!")
+        return
+    
+    attacker_username = message.from_user.username
+    defender_username = message.reply_to_message.from_user.username
+
+    attacker = Pokemon.pokemons[attacker_username]
+    defender = Pokemon.pokemons[defender_username]
+    
+    if attacker_username not in Pokemon.pokemons or defender_username not in Pokemon.pokemons:
+        bot.send_message(message.chat.id, "❌ Оба игрока должны иметь покемонов для боя!")
+        return
+
+    bot.send_message(message.chat.id, f"🔥 @{defender_username}, вы готовы сразиться с @{attacker_username}? Ответьте 'Да' или 'Нет")
+    bot.register_next_step_handler(message, attack_confirm, attacker, defender)
+def attack_confirm(message, attacker, defender):  
+    if message.reply_to_message.text.strip().lower() == 'да':
+        result = pokemon.attack(defender)
+        bot.send_message(message.chat.id, result)
     else:
-        bot.reply_to("⚠️ Ответь этой командой на сообщение противника, чтобы напасть!")
+        bot.send_message(message.chat.id, "⚔️ Битва отменена! Противник отказался от сражения.")
+
+
 
 
 @bot.message_handler(commands=['pokemon'])
