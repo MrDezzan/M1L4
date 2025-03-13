@@ -1,6 +1,6 @@
 import telebot, time, random
 from config import token
-from logic import Pokemon
+from logic import Pokemon, Fighter, Wizard
 
 bot = telebot.TeleBot(token) 
 feedcooldown = 150
@@ -11,7 +11,11 @@ def start(message):
 @bot.message_handler(commands=['go'])
 def go(message):
     if message.from_user.username not in Pokemon.pokemons.keys():
-        pokemon = Pokemon(message.from_user.username)
+        race = random.randint(1,2)
+        if race == 2:
+            pokemon = Fighter(message.from_user.username)
+        else:
+            pokemon = Wizard(message.from_user.username)
         bot.send_message(message.chat.id, pokemon.info())
         bot.send_photo(message.chat.id, pokemon.show_img())
     else:
@@ -54,8 +58,6 @@ def pokemon(message):
     if message.from_user.username in Pokemon.pokemons.keys():
         pokemon = Pokemon.pokemons[message.from_user.username]
         bot.send_message(message.chat.id, pokemon.info())
-        bot.send_photo(message.chat.id, pokemon.show_img())
-        bot.send_message(message.chat.id, f"Кол-во опыта: {pokemon.exp}, До след. уровня: {30 * pokemon.level - pokemon.exp}. Уровень: {pokemon.level}")
     else:
         bot.reply_to(message, 'Сначала создай себе покемона')
 
@@ -63,7 +65,7 @@ def pokemon(message):
 def info(message):
     bot.reply_to(message, '''- Этот бот создан для того, чтобы ты мог создать себе покемона и кормить его.🐥
 🔶 Автор: @sirdezzan
-💠 Версия бота: 0.2''')
+💠 Версия бота: 0.3!''')
 
 bot.infinity_polling(none_stop=True)
 
