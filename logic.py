@@ -73,10 +73,9 @@ class Pokemon:
     def attack(self, enemy):
         if isinstance(enemy, Wizard):
             if randint(1,5) == 4:
-                return '🛡️Покемон-волшебник @{self.pokemon_trainer} применил супер щит и отразил атаку питомца @{enemy.pokemon_trainer}!'
+                return f'🛡️Покемон-волшебник @{self.pokemon_trainer} применил супер щит и отразил атаку питомца @{enemy.pokemon_trainer}!'
 
-        if enemy.hp > self.power:
-            if isinstance(enemy, Fighter):
+            if isinstance(self, Fighter):
                 if randint(1,5) == 4:
                     super_power = randint(5, 10)
                     super_attack = self.power + super_power
@@ -84,14 +83,10 @@ class Pokemon:
                     return (f'⚔️Покемон-воин @{self.pokemon_trainer} активировал супер способность и усилил свою атаку ДО {super_attack} урона!\n\n'
                             f'⚔️ @{self.pokemon_trainer} атаковал @{enemy.pokemon_trainer} и нанёс {self.power} урона!\n'
                             f'❤️ У @{enemy.pokemon_trainer} осталось {enemy.hp}❤️')
-                else:
-                    enemy.hp -= self.power
-                    return (f'⚔️ @{self.pokemon_trainer} атаковал @{enemy.pokemon_trainer} и нанёс {self.power} урона!\n\n'
-                            f'❤️ У @{enemy.pokemon_trainer} осталось {enemy.hp}❤️')
-            else:
-                enemy.hp -= self.power
-                return (f'⚔️ @{self.pokemon_trainer} атаковал @{enemy.pokemon_trainer} и нанёс {self.power} урона!\n\n'
-                        f'❤️ У @{enemy.pokemon_trainer} осталось {enemy.hp}❤️')
+        if enemy.hp > self.power:
+            enemy.hp -= self.power
+            return (f'⚔️ @{self.pokemon_trainer} атаковал @{enemy.pokemon_trainer} и нанёс {self.power} урона!\n\n'
+                    f'❤️ У @{enemy.pokemon_trainer} осталось {enemy.hp}❤️')
         else:
             enemy.hp = 0
             self.wins += 1
