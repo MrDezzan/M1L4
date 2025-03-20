@@ -74,7 +74,7 @@ def attack_confirm(message, attacker, defender):
 @bot.message_handler(commands=['feed'])
 def feed_pok(message):
     if message.from_user.username in Pokemon.pokemons.keys():
-        pok = Pokemon
+        pok = Pokemon.pokemons[message.from_user.username]
         response = pok.feed()
         bot.send_message(message.chat.id, response)
     else:
