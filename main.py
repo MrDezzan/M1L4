@@ -24,49 +24,7 @@ def go(message):
     else:
         bot.reply_to(message, 'Ты уже создал себе покемона')
 
-@bot.message_handler(commands=['feed'])
-def feed(message):
-    user_id = (message.from_user.id)
-    current_time = time.time()
 
-    if message.from_user.username in Pokemon.pokemons.keys():   
-
-        if user_id in lastfeed and current_time - lastfeed[user_id] < feedcooldown:
-
-            remain_time = int(feedcooldown - (current_time - lastfeed[user_id]))
-            bot.reply_to(message, f'❌ Подожди {remain_time // 60} мин. {remain_time % 60} сек. перед следующим кормлением!') 
-            return
-        
-        pokemon = Pokemon.pokemons[message.from_user.username]
-        lastfeed[user_id] = current_time
-        expgain = random.randint(5, 15)
-        pokemon.exp += expgain
-        if pokemon.level == pokemon.upgrade:
-            pow = random.randint(4, 10)
-            pokemon.power += pow
-            pokemon.upgrade += 2 
-        
-        if pokemon.exp >= 30 * pokemon.level:
-            pokemon.level += 1
-            bot.reply_to(message, f'''Ты покормил {pokemon.name}, и он вырос! Теперь у него {pokemon.level} уровень!😊''')
-            pokemon.exp = 0
-            pow=random.randint(4,10)
-            if pokemon.level == pokemon.upgrade:
-                pow = random.randint(4, 10)
-                pokemon.power += pow
-                pokemon.upgrade += 2 
-
-        
-        else:
-            bot.reply_to(message, f'''Ты покормил {pokemon.name}😋
-Он получил {expgain} опыта⬆️ Кол-во опыта до следующего уровня: {30 * pokemon.level - pokemon.exp}''')
-            pow=random.randint(4,10)
-            if pokemon.level == pokemon.upgrade:
-                pow = random.randint(4, 10)
-                pokemon.power += pow
-                pokemon.upgrade += 2 
-    else:
-        bot.reply_to(message, 'Сначала создай себе покемона')
 
 @bot.message_handler(commands=['attack'])
 def attack(message):
@@ -81,7 +39,7 @@ def attack(message):
     defender = Pokemon.pokemons[defender_username]
     
     if attacker_username not in Pokemon.pokemons or defender_username not in Pokemon.pokemons:
-        bot.send_message(message.chat.id, "❌ Оба игрока должны иметь покемонов для боя!")
+        bot.send_message(message.chat.id, "❌ Оба игрока должны иметь покемонов для боя! /go")
         return
 
     bot.send_message(message.chat.id, f"🔥 @{defender_username}, вы готовы сразиться с @{attacker_username}? Ответьте 'Да' или 'Нет")
@@ -113,6 +71,17 @@ def attack_confirm(message, attacker, defender):
         bot.send_message(message.chat.id, "⚔️ Битва отменена! Противник отказался от сражения.")
 
 
+@bot.message_handler(commands=['feed'])
+def feed_pok(message):
+    if message.from_user.username in Pokemon.pokemons.keys():
+        pok = Pokemon
+        response = pok.feed()
+        bot.send_message(message.chat.id, response)
+    else:
+        bot.reply_to(message, 'Сначала создай себе покемона /go')
+
+
+
 
 @bot.message_handler(commands=['pokemon'])
 def pokemon(message):
@@ -120,7 +89,7 @@ def pokemon(message):
         pokemon = Pokemon.pokemons[message.from_user.username]
         bot.send_message(message.chat.id, pokemon.info())
     else:
-        bot.reply_to(message, 'Сначала создай себе покемона')
+        bot.reply_to(message, 'Сначала создай себе покемона /go')
 
 @bot.message_handler(commands=['info'])
 def info(message):
